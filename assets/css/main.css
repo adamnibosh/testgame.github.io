@@ -188,6 +188,196 @@ h1 {
 
 .stat-pill span { color: var(--cyan); }
 
+/* Versus mode — player differentiation */
+.versus-arena { margin-bottom: 20px; }
+
+.versus-turn-banner {
+  text-align: center;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.versus-turn-banner.player-0-active {
+  background: rgba(0, 245, 255, 0.15);
+  border-color: var(--cyan);
+  box-shadow: 0 0 24px rgba(0, 245, 255, 0.25);
+  color: var(--cyan);
+}
+
+.versus-turn-banner.player-1-active {
+  background: rgba(168, 85, 247, 0.15);
+  border-color: var(--purple);
+  box-shadow: 0 0 24px rgba(168, 85, 247, 0.25);
+  color: var(--purple);
+}
+
+.versus-players {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: stretch;
+}
+
+@media (max-width: 560px) {
+  .versus-players { grid-template-columns: 1fr; }
+  .versus-vs { display: none; }
+}
+
+.player-card {
+  padding: 18px 16px;
+  border-radius: 14px;
+  border: 2px solid var(--glass-border);
+  background: var(--glass);
+  text-align: center;
+  transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  opacity: 0.45;
+  transform: scale(0.96);
+}
+
+.player-card.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.player-card.player-0.active {
+  border-color: var(--cyan);
+  box-shadow: 0 0 28px rgba(0, 245, 255, 0.3);
+  background: rgba(0, 245, 255, 0.08);
+}
+
+.player-card.player-1.active {
+  border-color: var(--purple);
+  box-shadow: 0 0 28px rgba(168, 85, 247, 0.3);
+  background: rgba(168, 85, 247, 0.08);
+}
+
+.player-card.winner {
+  opacity: 1;
+  transform: scale(1.03);
+  animation: winner-pulse 1.2s ease infinite;
+}
+
+.player-card.player-0.winner { border-color: var(--cyan); box-shadow: 0 0 36px rgba(0, 245, 255, 0.5); }
+.player-card.player-1.winner { border-color: var(--purple); box-shadow: 0 0 36px rgba(168, 85, 247, 0.5); }
+
+.player-card.score-flash {
+  animation: score-pop 0.45s ease;
+}
+
+@keyframes score-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+@keyframes winner-pulse {
+  0%, 100% { transform: scale(1.03); }
+  50% { transform: scale(1.06); }
+}
+
+.player-avatar { font-size: 2rem; line-height: 1; margin-bottom: 6px; }
+
+.player-name {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.player-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.player-0 .player-tag { color: var(--cyan); }
+.player-1 .player-tag { color: var(--purple); }
+
+.player-score-big {
+  font-size: 2.4rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.player-0 .player-score-big { color: var(--cyan); }
+.player-1 .player-score-big { color: var(--purple); }
+
+.player-turn-badge {
+  display: none;
+  margin-top: 10px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  animation: turn-blink 1.4s ease infinite;
+}
+
+.player-card.active .player-turn-badge { display: inline-block; }
+
+.player-0 .player-turn-badge {
+  background: rgba(0, 245, 255, 0.2);
+  color: var(--cyan);
+  border: 1px solid var(--cyan);
+}
+
+.player-1 .player-turn-badge {
+  background: rgba(168, 85, 247, 0.2);
+  color: var(--purple);
+  border: 1px solid var(--purple);
+}
+
+@keyframes turn-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+.versus-vs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--gold);
+  text-shadow: 0 0 12px rgba(251, 191, 36, 0.5);
+}
+
+#game-panel[data-versus-active="0"] .question-box {
+  border-color: rgba(0, 245, 255, 0.5);
+  box-shadow: 0 0 20px rgba(0, 245, 255, 0.12);
+}
+
+#game-panel[data-versus-active="1"] .question-box {
+  border-color: rgba(168, 85, 247, 0.5);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.12);
+}
+
+.versus-results-scores {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.versus-result-card {
+  padding: 16px 24px;
+  border-radius: 12px;
+  border: 2px solid var(--glass-border);
+  min-width: 120px;
+}
+
+.versus-result-card.result-winner {
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+}
+
 .progress-bar {
   height: 6px;
   background: rgba(255, 255, 255, 0.08);

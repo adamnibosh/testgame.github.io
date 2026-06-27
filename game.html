@@ -27,15 +27,33 @@
           <span class="stat-pill">XP <span id="xp-display">0</span></span>
           <span class="stat-pill">Combo <span id="combo-display">—</span></span>
           <div class="timer-ring" id="timer-wrap" hidden>
-            <svg viewBox="0 0 64 64"><circle class="bg" cx="32" cy="32" r="28"/testgame.github.io/><circle class="fg" id="timer-fg" cx="32" cy="32" r="28"/testgame.github.io/></svg>
+            <svg viewBox="0 0 64 64"><circle class="bg" cx="32" cy="32" r="28"/><circle class="fg" id="timer-fg" cx="32" cy="32" r="28"/></svg>
             <div class="timer-num" id="timer-num">12</div>
           </div>
         </div>
       </div>
 
-      <div id="versus-scores" style="display:flex;gap:12px;margin-bottom:16px;" hidden>
-        <span class="stat-pill">P1: <span id="p1-score">0</span></span>
-        <span class="stat-pill">P2: <span id="p2-score">0</span></span>
+      <div id="versus-arena" class="versus-arena" hidden>
+        <div class="versus-turn-banner player-0-active" id="versus-turn-banner" aria-live="polite">
+          <span id="versus-turn-text">⚡ Player 1 — YOUR TURN</span>
+        </div>
+        <div class="versus-players">
+          <div class="player-card player-0 active" id="player-card-0">
+            <div class="player-avatar">⚡</div>
+            <div class="player-name">Player 1</div>
+            <div class="player-tag">Cyan · Team Blue</div>
+            <div class="player-score-big" id="p1-score">0</div>
+            <div class="player-turn-badge">▶ YOUR TURN</div>
+          </div>
+          <div class="versus-vs">VS</div>
+          <div class="player-card player-1" id="player-card-1">
+            <div class="player-avatar">🔥</div>
+            <div class="player-name">Player 2</div>
+            <div class="player-tag">Purple · Team Violet</div>
+            <div class="player-score-big" id="p2-score">0</div>
+            <div class="player-turn-badge">▶ YOUR TURN</div>
+          </div>
+        </div>
       </div>
 
       <div class="progress-bar"><div id="progress-fill" class="progress-fill" style="width:0%"></div></div>
@@ -58,8 +76,9 @@
     <div id="results-panel" class="results glass" hidden>
       <h2 id="result-msg">COMPLETE!</h2>
       <p class="score-big" id="final-score">0</p>
-      <p style="color:var(--muted);">Total XP Earned</p>
+      <p id="final-score-label" style="color:var(--muted);">Total XP Earned</p>
       <p style="margin-top:16px;">Accuracy: <strong id="final-pct">0%</strong> · Best Combo: <strong id="final-combo">0</strong></p>
+      <div id="versus-results" class="versus-results-scores" hidden></div>
       <p id="achievements-earned" style="color:var(--gold);margin-top:12px;"></p>
       <div style="margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
         <a class="btn btn-primary" href="/testgame.github.io/hub.html">Hub</a>
@@ -75,7 +94,9 @@
   <script>
     const p = new URLSearchParams(location.search);
     if (p.get("mode") === "versus") {
-      document.getElementById("versus-scores").hidden = false;
+      document.getElementById("versus-arena").hidden = false;
+      document.getElementById("turn-display").hidden = true;
+      document.getElementById("game-panel").dataset.versusActive = "0";
     }
     if (p.get("mode") === "blitz" || p.get("mode") === "boss") {
       document.getElementById("timer-wrap").hidden = false;

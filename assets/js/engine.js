@@ -8,6 +8,11 @@
   const topic = params.get("topic") || "logarithms";
   const count = parseInt(params.get("count") || "10", 10);
 
+  const PLAYERS = [
+    { name: "Player 1", icon: "⚡", team: "Cyan · Team Blue" },
+    { name: "Player 2", icon: "🔥", team: "Purple · Team Violet" }
+  ];
+
   let state = {
     scores: [0, 0],
     xp: 0,
@@ -143,6 +148,32 @@
     return pool;
   }
 
+  function updateVersusHUD() {
+    const active = state.currentPlayer;
+    const p = PLAYERS[active];
+
+    $("p1-score").textContent = state.scores[0];
+    $("p2-score").textContent = state.scores[1];
+
+    [0, 1].forEach(i => {
+      const card = $("player-card-" + i);
+      if (card) card.classList.toggle("active", i === active);
+    });
+
+    const banner = $("versus-turn-banner");
+    if (banner) {
+      banner.className = "versus-turn-banner player-" + active + "-active";
+    }
+
+    const turnText = $("versus-turn-text");
+    if (turnText) {
+      turnText.textContent = `${p.icon} ${p.name} — YOUR TURN`;
+    }
+
+    const panel = $("game-panel");
+    if (panel) panel.dataset.versusActive = String(active);
+  }
+
   function updateHUD() {
     const q = state.questions[state.qIndex];
     if (!q) return;
@@ -157,9 +188,7 @@
     $("progress-fill").style.width = pct + "%";
 
     if (mode === "versus") {
-      $("turn-display").textContent = `Player ${state.currentPlayer + 1}`;
-      $("p1-score").textContent = state.scores[0];
-      $("p2-score").textContent = state.scores[1];
+      updateVersusHUD();
     } else {
       $("turn-display").textContent = mode === "blitz" ? "BLITZ" : mode === "boss" ? "BOSS" : "SOLO";
     }
@@ -203,6 +232,13 @@
       state.xp += gained;
       state.scores[state.currentPlayer]++;
       state.streak++;
+      if (mode === "versus") {
+        const card = $("player-card-" + state.currentPlayer);
+        if (card) {
+          card.classList.add("score-flash");
+          setTimeout(() => card.classList.remove("score-flash"), 500);
+        }
+      }
       playCorrect();
       haptic(20);
       if (state.combo >= 3) {
@@ -336,8 +372,28 @@
 
     let msg = "";
     if (mode === "versus") {
-      msg = state.scores[0] === state.scores[1] ? "TIE GAME!" :
-        state.scores[0] > state.scores[1] ? "PLAYER 1 WINS!" : "PLAYER 2 WINS!";
+      const tie = state.scores[0] === state.scores[1];
+      const winner = tie ? -1 : state.scores[0] > state.scores[1] ? 0 : 1;
+      msg = tie ? "🤝 TIE GAME!" :
+        `${PLAYERS[winner].icon} ${PLAYERS[winner].name.toUpperCase()} WINS!`;
+
+      const vr = $("versus-results");
+      if (vr) {
+        vr.hidden = false;
+        vr.innerHTML = PLAYERS.map((pl, i) => {
+          const isWinner = !tie && i === winner;
+          return `<div class="versus-result-card player-${i} ${isWinner ? "result-winner" : ""}">
+            <div style="font-size:1.5rem">${pl.icon}</div>
+            <div style="font-weight:700">${pl.name}</div>
+            <div style="font-size:2rem;font-weight:900;margin-top:4px">${state.scores[i]}</div>
+            ${isWinner ? '<div style="color:var(--gold);font-size:0.8rem;margin-top:4px">WINNER</div>' : ""}
+          </div>`;
+        }).join("");
+      }
+
+      $("final-score").textContent = `${state.scores[0]} – ${state.scores[1]}`;
+      const scoreLabel = $("final-score-label");
+      if (scoreLabel) scoreLabel.textContent = "Final Score (P1 – P2)";
     } else if (pct === 100) msg = "FLAWLESS VICTORY!";
     else if (pct >= 80) msg = "OUTSTANDING!";
     else if (pct >= 60) msg = "SOLID WORK!";
@@ -380,6 +436,13 @@
     $("mode-title").textContent = formatTitle(mode, topic);
     $("game-panel").hidden = false;
     $("results-panel").hidden = true;
+
+    if (mode === "versus") {
+      const arena = $("versus-arena");
+      if (arena) arena.hidden = false;
+      const turnPill = $("turn-display");
+      if (turnPill) turnPill.hidden = true;
+    }
 
     $("btn-fifty").addEventListener("click", useFifty, { passive: true });
     $("btn-skip").addEventListener("click", useSkip, { passive: true });
