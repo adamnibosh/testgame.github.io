@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MATH NEXUS — Module Gate</title>
-  <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="prefetch" href="/game.html">
+  <link rel="stylesheet" href="/testgame.github.io/assets/css/main.css">
+  <link rel="prefetch" href="/testgame.github.io/game.html">
 </head>
 <body>
   <canvas id="bg-canvas" aria-hidden="true"></canvas>
@@ -16,8 +16,8 @@
     <div class="progress-bar" style="max-width:400px;margin:24px auto;"><div id="redirect-bar" class="progress-fill" style="width:0%"></div></div>
     <div class="spinner"></div>
   </div>
-  <script src="/assets/js/redirect.js"></script>
-  <script src="/assets/js/bg.js" defer></script>
+  <script src="/testgame.github.io/assets/js/redirect.js"></script>
+  <script src="/testgame.github.io/assets/js/bg.js" defer></script>
   <script>
     const p = new URLSearchParams(location.search);
     const topic = p.get("topic") || "logarithms";
@@ -31,7 +31,7 @@
     document.getElementById("gate-title").textContent = "Module: " + (names[topic] || topic);
     document.getElementById("gate-badge").textContent = from.toUpperCase();
 
-    const dest = MATH_REDIRECT.withParams("/game.html", { topic, mode, count });
+    const dest = MATH_REDIRECT.withParams("/testgame.github.io/game.html", { topic, mode, count });
     MATH_REDIRECT.chain([
       { msg: "▸ Verifying prerequisite knowledge...", delay: 300 },
       { msg: "▸ Loading " + (names[topic] || topic) + " question bank...", delay: 350, prefetch: true, url: dest },

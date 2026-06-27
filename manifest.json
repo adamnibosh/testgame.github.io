@@ -2,7 +2,7 @@
   "name": "MATH NEXUS",
   "short_name": "MathNexus",
   "description": "Ultra-performance logarithm & mathematics assignment platform",
-  "start_url": "/hub.html",
+  "start_url": "/testgame.github.io/hub.html",
   "display": "standalone",
   "background_color": "#050510",
   "theme_color": "#00f5ff",

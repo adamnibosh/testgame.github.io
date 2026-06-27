@@ -358,14 +358,14 @@
 
   function getNextRedirect() {
     const chain = {
-      logarithms: { url: "/algebra.html", label: "→ Module 2: Algebra" },
-      algebra: { url: "/trig.html", label: "→ Module 3: Trigonometry" },
-      trigonometry: { url: "/calc.html", label: "→ Module 4: Calculus" },
-      calculus: { url: "/geometry.html", label: "→ Module 5: Geometry" },
-      geometry: { url: "/statistics.html", label: "→ Module 6: Statistics" },
-      statistics: { url: "/boss.html", label: "→ FINAL BOSS" },
-      boss: { url: "/hub.html", label: "→ Return to Hub" },
-      all: { url: "/hub.html", label: "→ Return to Hub" }
+      logarithms: { url: "/testgame.github.io/algebra.html", label: "→ Module 2: Algebra" },
+      algebra: { url: "/testgame.github.io/trig.html", label: "→ Module 3: Trigonometry" },
+      trigonometry: { url: "/testgame.github.io/calc.html", label: "→ Module 4: Calculus" },
+      calculus: { url: "/testgame.github.io/geometry.html", label: "→ Module 5: Geometry" },
+      geometry: { url: "/testgame.github.io/statistics.html", label: "→ Module 6: Statistics" },
+      statistics: { url: "/testgame.github.io/boss.html", label: "→ FINAL BOSS" },
+      boss: { url: "/testgame.github.io/hub.html", label: "→ Return to Hub" },
+      all: { url: "/testgame.github.io/hub.html", label: "→ Return to Hub" }
     };
     return chain[topic] || chain.all;
   }

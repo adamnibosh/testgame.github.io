@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MATH NEXUS — Play</title>
-  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/testgame.github.io/assets/css/main.css">
 </head>
 <body>
   <canvas id="bg-canvas" aria-hidden="true"></canvas>
@@ -12,8 +12,8 @@
 
   <div class="wrap">
     <nav class="nav-bar">
-      <a class="btn btn-sm" href="/hub.html">← Hub</a>
-      <a class="btn btn-sm" href="/formulas.html">Formulas</a>
+      <a class="btn btn-sm" href="/testgame.github.io/hub.html">← Hub</a>
+      <a class="btn btn-sm" href="/testgame.github.io/formulas.html">Formulas</a>
     </nav>
 
     <div id="game-panel">
@@ -27,7 +27,7 @@
           <span class="stat-pill">XP <span id="xp-display">0</span></span>
           <span class="stat-pill">Combo <span id="combo-display">—</span></span>
           <div class="timer-ring" id="timer-wrap" hidden>
-            <svg viewBox="0 0 64 64"><circle class="bg" cx="32" cy="32" r="28"/><circle class="fg" id="timer-fg" cx="32" cy="32" r="28"/></svg>
+            <svg viewBox="0 0 64 64"><circle class="bg" cx="32" cy="32" r="28"/testgame.github.io/><circle class="fg" id="timer-fg" cx="32" cy="32" r="28"/testgame.github.io/></svg>
             <div class="timer-num" id="timer-num">12</div>
           </div>
         </div>
@@ -62,16 +62,16 @@
       <p style="margin-top:16px;">Accuracy: <strong id="final-pct">0%</strong> · Best Combo: <strong id="final-combo">0</strong></p>
       <p id="achievements-earned" style="color:var(--gold);margin-top:12px;"></p>
       <div style="margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-        <a class="btn btn-primary" href="/hub.html">Hub</a>
-        <a class="btn" id="next-module" href="/hub.html" hidden>Next Module</a>
+        <a class="btn btn-primary" href="/testgame.github.io/hub.html">Hub</a>
+        <a class="btn" id="next-module" href="/testgame.github.io/hub.html" hidden>Next Module</a>
         <a class="btn btn-gold" href="javascript:location.reload()">Play Again</a>
       </div>
     </div>
   </div>
 
-  <script src="/assets/js/questions.js"></script>
-  <script src="/assets/js/bg.js" defer></script>
-  <script src="/assets/js/engine.js" defer></script>
+  <script src="/testgame.github.io/assets/js/questions.js"></script>
+  <script src="/testgame.github.io/assets/js/bg.js" defer></script>
+  <script src="/testgame.github.io/assets/js/engine.js" defer></script>
   <script>
     const p = new URLSearchParams(location.search);
     if (p.get("mode") === "versus") {
