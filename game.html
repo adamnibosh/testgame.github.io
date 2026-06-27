@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MATH NEXUS — Play</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <canvas id="fx-canvas" style="position:fixed;inset:0;pointer-events:none;z-index:50;" aria-hidden="true"></canvas>
+
+  <div class="wrap">
+    <nav class="nav-bar">
+      <a class="btn btn-sm" href="/hub.html">← Hub</a>
+      <a class="btn btn-sm" href="/formulas.html">Formulas</a>
+    </nav>
+
+    <div id="game-panel">
+      <div class="game-header">
+        <div>
+          <h2 id="mode-title">Loading...</h2>
+          <span class="stat-pill">Q <span id="q-num">0/0</span></span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <span class="stat-pill" id="turn-display">Solo</span>
+          <span class="stat-pill">XP <span id="xp-display">0</span></span>
+          <span class="stat-pill">Combo <span id="combo-display">—</span></span>
+          <div class="timer-ring" id="timer-wrap" hidden>
+            <svg viewBox="0 0 64 64"><circle class="bg" cx="32" cy="32" r="28"/><circle class="fg" id="timer-fg" cx="32" cy="32" r="28"/></svg>
+            <div class="timer-num" id="timer-num">12</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="versus-scores" style="display:flex;gap:12px;margin-bottom:16px;" hidden>
+        <span class="stat-pill">P1: <span id="p1-score">0</span></span>
+        <span class="stat-pill">P2: <span id="p2-score">0</span></span>
+      </div>
+
+      <div class="progress-bar"><div id="progress-fill" class="progress-fill" style="width:0%"></div></div>
+
+      <div class="powerups">
+        <button class="btn btn-sm" id="btn-fifty" title="Remove 2 wrong answers">50/50</button>
+        <button class="btn btn-sm" id="btn-hint" title="Show hint (H)">Hint</button>
+        <button class="btn btn-sm" id="btn-skip" title="Skip question (S)">Skip</button>
+      </div>
+
+      <div class="question-box glass">
+        <p class="question-text" id="question-text">Loading question...</p>
+        <p class="hint-text" id="hint-text" aria-live="polite"></p>
+      </div>
+
+      <div class="options-grid" id="options-grid" role="group" aria-label="Answer options"></div>
+      <p class="subtitle" style="text-align:center;margin-top:16px;font-size:0.8rem;">Keys: 1-4 answer · H hint · S skip</p>
+    </div>
+
+    <div id="results-panel" class="results glass" hidden>
+      <h2 id="result-msg">COMPLETE!</h2>
+      <p class="score-big" id="final-score">0</p>
+      <p style="color:var(--muted);">Total XP Earned</p>
+      <p style="margin-top:16px;">Accuracy: <strong id="final-pct">0%</strong> · Best Combo: <strong id="final-combo">0</strong></p>
+      <p id="achievements-earned" style="color:var(--gold);margin-top:12px;"></p>
+      <div style="margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a class="btn btn-primary" href="/hub.html">Hub</a>
+        <a class="btn" id="next-module" href="/hub.html" hidden>Next Module</a>
+        <a class="btn btn-gold" href="javascript:location.reload()">Play Again</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/js/questions.js"></script>
+  <script src="/assets/js/bg.js" defer></script>
+  <script src="/assets/js/engine.js" defer></script>
+  <script>
+    const p = new URLSearchParams(location.search);
+    if (p.get("mode") === "versus") {
+      document.getElementById("versus-scores").hidden = false;
+    }
+    if (p.get("mode") === "blitz" || p.get("mode") === "boss") {
+      document.getElementById("timer-wrap").hidden = false;
+    }
+  </script>
+</body>
+</html>

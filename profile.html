@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MATH NEXUS — Player Stats</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="wrap fade-in">
+    <nav class="nav-bar"><a class="btn btn-sm" href="/hub.html">← Hub</a></nav>
+    <h1>Player Stats</h1>
+    <p class="subtitle">Your progress across all modules</p>
+
+    <div class="grid" style="margin-top:32px;">
+      <div class="glass card" style="cursor:default;">
+        <h3>Level</h3>
+        <p class="score-big" style="font-size:3rem;" id="stat-level">1</p>
+      </div>
+      <div class="glass card" style="cursor:default;">
+        <h3>Total XP</h3>
+        <p class="score-big" style="font-size:3rem;" id="stat-xp">0</p>
+      </div>
+      <div class="glass card" style="cursor:default;">
+        <h3>Games Played</h3>
+        <p class="score-big" style="font-size:3rem;" id="stat-games">0</p>
+      </div>
+      <div class="glass card" style="cursor:default;">
+        <h3>Best Combo</h3>
+        <p class="score-big" style="font-size:3rem;" id="stat-combo">0</p>
+      </div>
+      <div class="glass card" style="cursor:default;">
+        <h3>Daily Best</h3>
+        <p class="score-big" style="font-size:3rem;" id="stat-daily">0</p>
+      </div>
+      <div class="glass card" style="cursor:default;">
+        <h3>Achievements</h3>
+        <p id="stat-achievements" style="color:var(--gold);margin-top:8px;">None yet</p>
+      </div>
+    </div>
+
+    <p style="text-align:center;margin-top:32px;">
+      <button class="btn" id="btn-reset" style="color:var(--red);">Reset Progress</button>
+    </p>
+  </div>
+  <script src="/assets/js/bg.js" defer></script>
+  <script>
+    const KEY = "math_nexus_v3";
+    const p = JSON.parse(localStorage.getItem(KEY) || "{}");
+    document.getElementById("stat-level").textContent = p.level || 1;
+    document.getElementById("stat-xp").textContent = p.totalXP || 0;
+    document.getElementById("stat-games").textContent = p.gamesPlayed || 0;
+    document.getElementById("stat-combo").textContent = p.bestCombo || 0;
+    document.getElementById("stat-daily").textContent = p.dailyScore || 0;
+    const ach = p.achievements || [];
+    const labels = {
+      century: "💯 Century Club (100+ XP in one game)",
+      combo5: "🔥 Combo Master (5x combo)",
+      perfect: "⭐ Perfect Score",
+      boss_slayer: "👹 Boss Slayer"
+    };
+    document.getElementById("stat-achievements").innerHTML = ach.length
+      ? ach.map(a => labels[a] || a).join("<br>")
+      : "Play games to unlock achievements!";
+    document.getElementById("btn-reset").onclick = () => {
+      if (confirm("Reset all progress?")) {
+        localStorage.removeItem(KEY);
+        location.reload();
+      }
+    };
+  </script>
+</body>
+</html>

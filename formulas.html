@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MATH NEXUS — Formula Sheet</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="wrap fade-in">
+    <nav class="nav-bar">
+      <a class="btn btn-sm" href="/hub.html">← Hub</a>
+      <a class="btn btn-sm" href="/log.html">Play Logs</a>
+    </nav>
+    <h1>Formula Sheet</h1>
+    <p class="subtitle">Quick reference for every module</p>
+
+    <div class="glass" style="padding:24px;margin-top:24px;overflow-x:auto;">
+      <table class="formula-table">
+        <thead><tr><th>Topic</th><th>Formula</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Logarithms</td><td><code>log_b(x) = y ⟺ b^y = x</code></td><td>Definition</td></tr>
+          <tr><td>Logarithms</td><td><code>log(ab) = log(a) + log(b)</code></td><td>Product rule</td></tr>
+          <tr><td>Logarithms</td><td><code>log(a^n) = n·log(a)</code></td><td>Power rule</td></tr>
+          <tr><td>Logarithms</td><td><code>ln(e^x) = x</code></td><td>Natural log</td></tr>
+          <tr><td>Algebra</td><td><code>x = (-b ± √(b²-4ac)) / 2a</code></td><td>Quadratic formula</td></tr>
+          <tr><td>Algebra</td><td><code>(a+b)² = a² + 2ab + b²</code></td><td>Perfect square</td></tr>
+          <tr><td>Trig</td><td><code>sin²θ + cos²θ = 1</code></td><td>Pythagorean identity</td></tr>
+          <tr><td>Trig</td><td><code>tan θ = sin θ / cos θ</code></td><td>Tangent definition</td></tr>
+          <tr><td>Calculus</td><td><code>d/dx(x^n) = nx^(n-1)</code></td><td>Power rule</td></tr>
+          <tr><td>Calculus</td><td><code>∫x^n dx = x^(n+1)/(n+1) + C</code></td><td>Integration</td></tr>
+          <tr><td>Geometry</td><td><code>A = πr²</code></td><td>Circle area</td></tr>
+          <tr><td>Geometry</td><td><code>V = (4/3)πr³</code></td><td>Sphere volume</td></tr>
+          <tr><td>Statistics</td><td><code>z = (x - μ) / σ</code></td><td>Z-score</td></tr>
+          <tr><td>Statistics</td><td><code>P(A∩B) = P(A)·P(B)</code></td><td>Independent events</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="text-align:center;margin-top:24px;"><a class="btn btn-primary" href="/hub.html">Back to Hub</a></p>
+  </div>
+  <script src="/assets/js/bg.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MATH NEXUS — Assignment Hub</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="prefetch" href="/game.html">
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="wrap fade-in">
+    <nav class="nav-bar">
+      <a class="btn btn-sm" href="/formulas.html">📐 Formulas</a>
+      <a class="btn btn-sm" href="/profile.html">📊 Stats</a>
+      <a class="btn btn-sm" href="/daily.html">☀️ Daily</a>
+    </nav>
+
+    <header style="text-align:center;margin-bottom:40px;">
+      <span class="badge badge-cyan">Assignment v3.0</span>
+      <h1 style="margin-top:12px;">MATH NEXUS</h1>
+      <p class="subtitle">Your unfinished math assignment — now unbelievably overpowered</p>
+    </header>
+
+    <section>
+      <h2 style="margin-bottom:16px;font-size:1.1rem;color:var(--muted);">📚 ASSIGNMENT MODULES</h2>
+      <div class="grid">
+        <a class="card glass" href="/log.html">
+          <div class="card-icon">📈</div>
+          <h3>Module 1: Logarithms</h3>
+          <p>Original assignment core — log rules, bases, natural logs</p>
+          <span class="badge badge-cyan" style="margin-top:10px;">Start Here</span>
+        </a>
+        <a class="card glass" href="/algebra.html">
+          <div class="card-icon">🔢</div>
+          <h3>Module 2: Algebra</h3>
+          <p>Equations, factoring, functions, quadratics</p>
+        </a>
+        <a class="card glass" href="/trig.html">
+          <div class="card-icon">📐</div>
+          <h3>Module 3: Trigonometry</h3>
+          <p>Unit circle, identities, inverse trig</p>
+        </a>
+        <a class="card glass" href="/calc.html">
+          <div class="card-icon">∫</div>
+          <h3>Module 4: Calculus</h3>
+          <p>Derivatives, integrals, limits</p>
+        </a>
+        <a class="card glass" href="/geometry.html">
+          <div class="card-icon">△</div>
+          <h3>Module 5: Geometry</h3>
+          <p>Areas, volumes, angles, π</p>
+        </a>
+        <a class="card glass" href="/statistics.html">
+          <div class="card-icon">📊</div>
+          <h3>Module 6: Statistics</h3>
+          <p>Mean, probability, combinations</p>
+        </a>
+      </div>
+    </section>
+
+    <section style="margin-top:40px;">
+      <h2 style="margin-bottom:16px;font-size:1.1rem;color:var(--muted);">⚡ GAME MODES</h2>
+      <div class="grid">
+        <a class="card glass" href="/versus.html">
+          <div class="card-icon">⚔️</div>
+          <h3>2-Player Versus</h3>
+          <p>Original multiplayer mode — take turns, battle for glory</p>
+          <span class="badge badge-purple">Classic</span>
+        </a>
+        <a class="card glass" href="/solo.html">
+          <div class="card-icon">🎯</div>
+          <h3>Solo Campaign</h3>
+          <p>Grind XP, build combos, level up your math skills</p>
+        </a>
+        <a class="card glass" href="/blitz.html">
+          <div class="card-icon">⏱️</div>
+          <h3>Blitz Mode</h3>
+          <p>12-second timer per question — pure adrenaline</p>
+          <span class="badge badge-gold">Hardcore</span>
+        </a>
+        <a class="card glass" href="/boss.html">
+          <div class="card-icon">👹</div>
+          <h3>Boss Rush</h3>
+          <p>5 nightmare questions — 20 seconds each</p>
+        </a>
+        <a class="card glass" href="/daily.html">
+          <div class="card-icon">☀️</div>
+          <h3>Daily Challenge</h3>
+          <p>New mixed quiz every day — compete with yourself</p>
+        </a>
+        <a class="card glass" href="/mixed.html">
+          <div class="card-icon">🌌</div>
+          <h3>Mixed Gauntlet</h3>
+          <p>All 6 topics randomized — ultimate test</p>
+        </a>
+      </div>
+    </section>
+
+    <footer style="text-align:center;margin-top:48px;color:var(--muted);font-size:0.85rem;">
+      <p>adamnibosh · testgame.github.io · Built for maximum performance</p>
+    </footer>
+  </div>
+  <script src="/assets/js/bg.js" defer></script>
+  <script>
+    document.querySelectorAll(".card").forEach(card => {
+      card.addEventListener("mouseenter", () => {
+        const link = document.createElement("link");
+        link.rel = "prefetch";
+        link.href = card.href;
+        document.head.appendChild(link);
+      }, { passive: true, once: true });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "MATH NEXUS",
+  "short_name": "MathNexus",
+  "description": "Ultra-performance logarithm & mathematics assignment platform",
+  "start_url": "/hub.html",
+  "display": "standalone",
+  "background_color": "#050510",
+  "theme_color": "#00f5ff",
+  "icons": []
+}

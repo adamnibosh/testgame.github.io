@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MATH NEXUS — Boot Sequence</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="prefetch" href="/hub.html">
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="wrap redirect-msg fade-in">
+    <h1>MATH NEXUS</h1>
+    <p class="subtitle">Logarithm Multiplayer Assignment — Ultra Edition</p>
+    <div class="glass" style="max-width:480px;margin:32px auto;padding:32px;">
+      <p id="redirect-status" style="font-family:var(--mono);color:var(--cyan);min-height:1.5em;">Booting modules...</p>
+      <div class="progress-bar"><div id="redirect-bar" class="progress-fill" style="width:0%"></div></div>
+      <p class="subtitle" style="margin-top:16px;font-size:0.85rem;">6 math domains · 60+ questions · Boss rush · Daily challenge</p>
+    </div>
+  </div>
+  <script src="/assets/js/redirect.js"></script>
+  <script src="/assets/js/bg.js" defer></script>
+  <script>
+    MATH_REDIRECT.chain([
+      { msg: "▸ Loading logarithm engine...", delay: 350, prefetch: true, url: "/hub.html" },
+      { msg: "▸ Compiling question matrix...", delay: 400 },
+      { msg: "▸ Syncing XP database...", delay: 350 },
+      { msg: "▸ Activating particle renderer...", delay: 300 },
+      { msg: "▸ Opening Assignment Hub...", delay: 250, url: "/hub.html" }
+    ]);
+  </script>
+</body>
+</html>

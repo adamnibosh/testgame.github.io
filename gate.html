@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MATH NEXUS — Module Gate</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="prefetch" href="/game.html">
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="wrap redirect-msg">
+    <span class="badge badge-purple" id="gate-badge">GATE</span>
+    <h2 style="margin-top:16px;" id="gate-title">Entering Module</h2>
+    <p id="redirect-status" class="subtitle">Authenticating math credentials...</p>
+    <div class="progress-bar" style="max-width:400px;margin:24px auto;"><div id="redirect-bar" class="progress-fill" style="width:0%"></div></div>
+    <div class="spinner"></div>
+  </div>
+  <script src="/assets/js/redirect.js"></script>
+  <script src="/assets/js/bg.js" defer></script>
+  <script>
+    const p = new URLSearchParams(location.search);
+    const topic = p.get("topic") || "logarithms";
+    const mode = p.get("mode") || "solo";
+    const count = p.get("count") || "10";
+    const from = p.get("from") || "unknown";
+    const names = {
+      logarithms: "Logarithms", algebra: "Algebra", trigonometry: "Trigonometry",
+      calculus: "Calculus", geometry: "Geometry", statistics: "Statistics"
+    };
+    document.getElementById("gate-title").textContent = "Module: " + (names[topic] || topic);
+    document.getElementById("gate-badge").textContent = from.toUpperCase();
+
+    const dest = MATH_REDIRECT.withParams("/game.html", { topic, mode, count });
+    MATH_REDIRECT.chain([
+      { msg: "▸ Verifying prerequisite knowledge...", delay: 300 },
+      { msg: "▸ Loading " + (names[topic] || topic) + " question bank...", delay: 350, prefetch: true, url: dest },
+      { msg: "▸ Calibrating difficulty matrix...", delay: 300 },
+      { msg: "▸ Launching " + mode + " mode...", delay: 250, url: dest }
+    ]);
+  </script>
+</body>
+</html>
