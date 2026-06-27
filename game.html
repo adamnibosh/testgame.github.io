@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#020208">
   <title>MATH NEXUS — Play</title>
   <link rel="stylesheet" href="/testgame.github.io/assets/css/main.css">
 </head>
@@ -11,21 +12,24 @@
   <canvas id="fx-canvas" style="position:fixed;inset:0;pointer-events:none;z-index:50;" aria-hidden="true"></canvas>
 
   <div class="wrap">
-    <nav class="nav-bar">
-      <a class="btn btn-sm" href="/testgame.github.io/hub.html">← Hub</a>
-      <a class="btn btn-sm" href="/testgame.github.io/formulas.html">Formulas</a>
-    </nav>
+    <header class="topbar">
+      <a class="topbar-brand" href="/testgame.github.io/hub.html">← Hub</a>
+      <nav class="topbar-nav">
+        <a class="btn btn-sm" href="/testgame.github.io/formulas.html">Formulas</a>
+      </nav>
+    </header>
 
-    <div id="game-panel">
+    <div id="game-panel" class="game-shell glass">
       <div class="game-header">
         <div>
+          <span class="mode-tag" id="mode-tag">Mode</span>
           <h2 id="mode-title">Loading...</h2>
-          <span class="stat-pill">Q <span id="q-num">0/0</span></span>
         </div>
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <div class="hud-stats">
           <span class="stat-pill" id="turn-display">Solo</span>
-          <span class="stat-pill">XP <span id="xp-display">0</span></span>
-          <span class="stat-pill">Combo <span id="combo-display">—</span></span>
+          <span class="stat-pill">Q <span class="val" id="q-num">0/0</span></span>
+          <span class="stat-pill" id="xp-pill">XP <span class="val" id="xp-display">0</span></span>
+          <span class="stat-pill" id="combo-pill">Combo <span class="val" id="combo-display">—</span></span>
           <div class="timer-ring" id="timer-wrap" hidden>
             <svg viewBox="0 0 64 64"><circle class="bg" cx="32" cy="32" r="28"/><circle class="fg" id="timer-fg" cx="32" cy="32" r="28"/></svg>
             <div class="timer-num" id="timer-num">12</div>
@@ -41,7 +45,7 @@
           <div class="player-card player-0 active" id="player-card-0">
             <div class="player-avatar">⚡</div>
             <div class="player-name">Player 1</div>
-            <div class="player-tag">Cyan · Team Blue</div>
+            <div class="player-tag">Cyan · Blue</div>
             <div class="player-score-big" id="p1-score">0</div>
             <div class="player-turn-badge">▶ YOUR TURN</div>
           </div>
@@ -49,58 +53,76 @@
           <div class="player-card player-1" id="player-card-1">
             <div class="player-avatar">🔥</div>
             <div class="player-name">Player 2</div>
-            <div class="player-tag">Purple · Team Violet</div>
+            <div class="player-tag">Purple · Violet</div>
             <div class="player-score-big" id="p2-score">0</div>
             <div class="player-turn-badge">▶ YOUR TURN</div>
           </div>
         </div>
       </div>
 
-      <div class="progress-bar"><div id="progress-fill" class="progress-fill" style="width:0%"></div></div>
-
-      <div class="powerups">
-        <button class="btn btn-sm" id="btn-fifty" title="Remove 2 wrong answers">50/50</button>
-        <button class="btn btn-sm" id="btn-hint" title="Show hint (H)">Hint</button>
-        <button class="btn btn-sm" id="btn-skip" title="Skip question (S)">Skip</button>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Progress</span><span id="progress-pct">0%</span></div>
+        <div class="progress-bar"><div id="progress-fill" class="progress-fill" style="width:0%"></div></div>
       </div>
 
-      <div class="question-box glass">
+      <div class="powerups">
+        <button class="power-btn" id="btn-fifty" type="button" title="Remove 2 wrong answers">
+          <span class="power-icon">½</span>
+          <span class="power-label">50/50</span>
+          <span class="power-count" id="count-fifty">1</span>
+        </button>
+        <button class="power-btn" id="btn-hint" type="button" title="Show hint">
+          <span class="power-icon">?</span>
+          <span class="power-label">Hint</span>
+          <span class="power-count" id="count-hint">2</span>
+        </button>
+        <button class="power-btn" id="btn-skip" type="button" title="Skip question">
+          <span class="power-icon">»</span>
+          <span class="power-label">Skip</span>
+          <span class="power-count" id="count-skip">1</span>
+        </button>
+      </div>
+
+      <div class="question-box glass q-enter" id="question-box">
         <p class="question-text" id="question-text">Loading question...</p>
         <p class="hint-text" id="hint-text" aria-live="polite"></p>
       </div>
 
       <div class="options-grid" id="options-grid" role="group" aria-label="Answer options"></div>
-      <p class="subtitle" style="text-align:center;margin-top:16px;font-size:0.8rem;">Keys: 1-4 answer · H hint · S skip</p>
+      <p class="key-hint">Press <kbd>1</kbd>–<kbd>4</kbd> to answer · <kbd>H</kbd> hint · <kbd>S</kbd> skip</p>
     </div>
 
     <div id="results-panel" class="results glass" hidden>
       <h2 id="result-msg">COMPLETE!</h2>
       <p class="score-big" id="final-score">0</p>
-      <p id="final-score-label" style="color:var(--muted);">Total XP Earned</p>
-      <p style="margin-top:16px;">Accuracy: <strong id="final-pct">0%</strong> · Best Combo: <strong id="final-combo">0</strong></p>
+      <p id="final-score-label" class="results-meta">Total XP Earned</p>
+      <p class="results-meta" id="results-stats">Accuracy: <strong id="final-pct">0%</strong> · Best Combo: <strong id="final-combo">0</strong></p>
       <div id="versus-results" class="versus-results-scores" hidden></div>
-      <p id="achievements-earned" style="color:var(--gold);margin-top:12px;"></p>
-      <div style="margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <p id="achievements-earned" class="achievements-line"></p>
+      <div class="results-actions">
         <a class="btn btn-primary" href="/testgame.github.io/hub.html">Hub</a>
         <a class="btn" id="next-module" href="/testgame.github.io/hub.html" hidden>Next Module</a>
-        <a class="btn btn-gold" href="javascript:location.reload()">Play Again</a>
+        <button class="btn btn-gold" type="button" id="btn-replay">Play Again</button>
       </div>
     </div>
   </div>
 
   <script src="/testgame.github.io/assets/js/questions.js"></script>
   <script src="/testgame.github.io/assets/js/bg.js" defer></script>
+  <script src="/testgame.github.io/assets/js/ui.js" defer></script>
   <script src="/testgame.github.io/assets/js/engine.js" defer></script>
   <script>
     const p = new URLSearchParams(location.search);
-    if (p.get("mode") === "versus") {
+    const mode = p.get("mode");
+    if (mode === "versus") {
       document.getElementById("versus-arena").hidden = false;
       document.getElementById("turn-display").hidden = true;
       document.getElementById("game-panel").dataset.versusActive = "0";
     }
-    if (p.get("mode") === "blitz" || p.get("mode") === "boss") {
+    if (mode === "blitz" || mode === "boss") {
       document.getElementById("timer-wrap").hidden = false;
     }
+    document.getElementById("btn-replay").onclick = () => location.reload();
   </script>
 </body>
 </html>

@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#020208">
   <title>MATH NEXUS — Module Gate</title>
   <link rel="stylesheet" href="/testgame.github.io/assets/css/main.css">
   <link rel="prefetch" href="/testgame.github.io/game.html">
@@ -11,10 +12,10 @@
   <canvas id="bg-canvas" aria-hidden="true"></canvas>
   <div class="wrap redirect-msg">
     <span class="badge badge-purple" id="gate-badge">GATE</span>
-    <h2 style="margin-top:16px;" id="gate-title">Entering Module</h2>
-    <p id="redirect-status" class="subtitle">Authenticating math credentials...</p>
-    <div class="progress-bar" style="max-width:400px;margin:24px auto;"><div id="redirect-bar" class="progress-fill" style="width:0%"></div></div>
-    <div class="spinner"></div>
+    <h2 id="gate-title" style="margin-top:14px;">Entering Module</h2>
+    <p id="redirect-status" class="subtitle">Authenticating...</p>
+    <div class="progress-bar" style="max-width:400px;width:100%;margin:20px 0;"><div id="redirect-bar" class="progress-fill" style="width:0%"></div></div>
+    <div class="spinner" aria-hidden="true"></div>
   </div>
   <script src="/testgame.github.io/assets/js/redirect.js"></script>
   <script src="/testgame.github.io/assets/js/bg.js" defer></script>
@@ -26,17 +27,17 @@
     const from = p.get("from") || "unknown";
     const names = {
       logarithms: "Logarithms", algebra: "Algebra", trigonometry: "Trigonometry",
-      calculus: "Calculus", geometry: "Geometry", statistics: "Statistics"
+      calculus: "Calculus", geometry: "Geometry", statistics: "Statistics", all: "Mixed", boss: "Boss"
     };
-    document.getElementById("gate-title").textContent = "Module: " + (names[topic] || topic);
+    document.getElementById("gate-title").textContent = names[topic] || topic;
     document.getElementById("gate-badge").textContent = from.toUpperCase();
 
     const dest = MATH_REDIRECT.withParams("/testgame.github.io/game.html", { topic, mode, count });
     MATH_REDIRECT.chain([
-      { msg: "▸ Verifying prerequisite knowledge...", delay: 300 },
-      { msg: "▸ Loading " + (names[topic] || topic) + " question bank...", delay: 350, prefetch: true, url: dest },
-      { msg: "▸ Calibrating difficulty matrix...", delay: 300 },
-      { msg: "▸ Launching " + mode + " mode...", delay: 250, url: dest }
+      { msg: "▸ Verifying prerequisites...", delay: 280 },
+      { msg: "▸ Loading " + (names[topic] || topic) + " bank...", delay: 320, prefetch: true, url: dest },
+      { msg: "▸ Calibrating difficulty...", delay: 280 },
+      { msg: "▸ Launching " + mode + "...", delay: 220, url: dest }
     ]);
   </script>
 </body>

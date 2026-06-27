@@ -152,8 +152,10 @@
     const active = state.currentPlayer;
     const p = PLAYERS[active];
 
-    $("p1-score").textContent = state.scores[0];
-    $("p2-score").textContent = state.scores[1];
+    const p1 = $("p1-score");
+    const p2 = $("p2-score");
+    if (p1) p1.textContent = state.scores[0];
+    if (p2) p2.textContent = state.scores[1];
 
     [0, 1].forEach(i => {
       const card = $("player-card-" + i);
@@ -161,31 +163,52 @@
     });
 
     const banner = $("versus-turn-banner");
-    if (banner) {
-      banner.className = "versus-turn-banner player-" + active + "-active";
-    }
+    if (banner) banner.className = "versus-turn-banner player-" + active + "-active";
 
     const turnText = $("versus-turn-text");
-    if (turnText) {
-      turnText.textContent = `${p.icon} ${p.name} — YOUR TURN`;
-    }
+    if (turnText) turnText.textContent = `${p.icon} ${p.name} — YOUR TURN`;
 
     const panel = $("game-panel");
     if (panel) panel.dataset.versusActive = String(active);
+  }
+
+  function updatePowerupCounts() {
+    const map = { fifty: "count-fifty", skip: "count-skip", hint: "count-hint" };
+    Object.keys(map).forEach(k => {
+      const el = $(map[k]);
+      if (el) el.textContent = state.powerups[k];
+    });
   }
 
   function updateHUD() {
     const q = state.questions[state.qIndex];
     if (!q) return;
 
+    const qBox = $("question-box");
+    if (qBox) {
+      qBox.classList.remove("q-enter");
+      void qBox.offsetWidth;
+      qBox.classList.add("q-enter");
+    }
+
     $("question-text").textContent = q.q;
-    $("hint-text").textContent = "";
+    const hintEl = $("hint-text");
+    if (hintEl) {
+      hintEl.textContent = "";
+      hintEl.classList.remove("has-hint");
+    }
     $("q-num").textContent = `${state.qIndex + 1}/${state.questions.length}`;
     $("xp-display").textContent = state.xp;
-    $("combo-display").textContent = state.combo > 1 ? `×${state.combo}` : "—";
 
-    const pct = ((state.qIndex) / state.questions.length) * 100;
+    const comboEl = $("combo-display");
+    const comboPill = $("combo-pill");
+    if (comboEl) comboEl.textContent = state.combo > 1 ? `×${state.combo}` : "—";
+    if (comboPill) comboPill.classList.toggle("combo-active", state.combo > 1);
+
+    const pct = Math.round((state.qIndex / state.questions.length) * 100);
     $("progress-fill").style.width = pct + "%";
+    const pctLabel = $("progress-pct");
+    if (pctLabel) pctLabel.textContent = pct + "%";
 
     if (mode === "versus") {
       updateVersusHUD();
@@ -198,10 +221,12 @@
     state.answered = false;
 
     const opts = mode === "boss" ? q.o : MATH_NEXUS.shuffle(q.o);
-    opts.forEach(opt => {
+    const keys = ["1", "2", "3", "4"];
+    opts.forEach((opt, i) => {
       const btn = document.createElement("button");
       btn.className = "opt-btn";
-      btn.textContent = opt;
+      btn.type = "button";
+      btn.innerHTML = `<span class="opt-key">${keys[i]}</span><span class="opt-val">${opt}</span>`;
       btn.addEventListener("click", () => selectAnswer(opt, btn), { passive: true });
       grid.appendChild(btn);
     });
@@ -209,6 +234,7 @@
     $("btn-fifty").disabled = state.powerups.fifty <= 0;
     $("btn-skip").disabled = state.powerups.skip <= 0;
     $("btn-hint").disabled = state.powerups.hint <= 0;
+    updatePowerupCounts();
   }
 
   function selectAnswer(option, btn) {
@@ -220,7 +246,9 @@
     const buttons = $("options-grid").querySelectorAll(".opt-btn");
     buttons.forEach(b => {
       b.disabled = true;
-      if (b.textContent === q.a) b.classList.add("correct");
+      const val = b.querySelector(".opt-val");
+      const text = val ? val.textContent : b.textContent;
+      if (text === q.a) b.classList.add("correct");
       else if (b === btn && !correct) b.classList.add("wrong");
     });
 
@@ -252,7 +280,11 @@
       state.streak = 0;
       playWrong();
       haptic([50, 30, 50]);
-      $("hint-text").textContent = "💡 " + q.hint;
+      const hintEl = $("hint-text");
+      if (hintEl) {
+        hintEl.textContent = "💡 " + q.hint;
+        hintEl.classList.add("has-hint");
+      }
     }
 
     clearTimer();
@@ -270,17 +302,22 @@
     state.powerups.fifty--;
     const q = state.questions[state.qIndex];
     const btns = [...$("options-grid").querySelectorAll(".opt-btn")];
-    const wrong = btns.filter(b => b.textContent !== q.a);
+    const wrong = btns.filter(b => {
+      const v = b.querySelector(".opt-val");
+      return (v ? v.textContent : b.textContent) !== q.a;
+    });
     MATH_NEXUS.shuffle(wrong).slice(0, 2).forEach(b => {
       b.style.visibility = "hidden";
       b.disabled = true;
     });
     $("btn-fifty").disabled = true;
+    updatePowerupCounts();
   }
 
   function useSkip() {
     if (state.powerups.skip <= 0 || state.answered) return;
     state.powerups.skip--;
+    updatePowerupCounts();
     state.combo = 0;
     state.qIndex++;
     if (state.qIndex >= state.questions.length) endGame();
@@ -290,8 +327,13 @@
   function useHint() {
     if (state.powerups.hint <= 0 || state.answered) return;
     state.powerups.hint--;
-    $("hint-text").textContent = "💡 " + state.questions[state.qIndex].hint;
+    const hintEl = $("hint-text");
+    if (hintEl) {
+      hintEl.textContent = "💡 " + state.questions[state.qIndex].hint;
+      hintEl.classList.add("has-hint");
+    }
     $("btn-hint").disabled = state.powerups.hint <= 0;
+    updatePowerupCounts();
   }
 
   function startTimer(seconds) {
@@ -306,10 +348,16 @@
     clearTimer();
     state.timer = setInterval(() => {
       state.timeLeft -= 0.1;
+      const wrap = $("timer-wrap");
       if (num) num.textContent = Math.ceil(state.timeLeft);
       if (ring) {
         const offset = circumference * (1 - state.timeLeft / seconds);
         ring.style.strokeDashoffset = offset;
+      }
+      if (wrap) {
+        wrap.classList.remove("warn", "danger");
+        if (state.timeLeft <= 3) wrap.classList.add("danger");
+        else if (state.timeLeft <= 6) wrap.classList.add("warn");
       }
       if (state.timeLeft <= 0) {
         clearTimer();
@@ -382,18 +430,20 @@
         vr.hidden = false;
         vr.innerHTML = PLAYERS.map((pl, i) => {
           const isWinner = !tie && i === winner;
-          return `<div class="versus-result-card player-${i} ${isWinner ? "result-winner" : ""}">
-            <div style="font-size:1.5rem">${pl.icon}</div>
-            <div style="font-weight:700">${pl.name}</div>
-            <div style="font-size:2rem;font-weight:900;margin-top:4px">${state.scores[i]}</div>
-            ${isWinner ? '<div style="color:var(--gold);font-size:0.8rem;margin-top:4px">WINNER</div>' : ""}
+          return `<div class="versus-result-card player-${i}${isWinner ? " result-winner" : ""}">
+            <div class="vr-icon">${pl.icon}</div>
+            <div class="vr-name">${pl.name}</div>
+            <div class="vr-score">${state.scores[i]}</div>
+            ${isWinner ? '<div class="vr-win">WINNER</div>' : ""}
           </div>`;
         }).join("");
       }
 
       $("final-score").textContent = `${state.scores[0]} – ${state.scores[1]}`;
       const scoreLabel = $("final-score-label");
-      if (scoreLabel) scoreLabel.textContent = "Final Score (P1 – P2)";
+      if (scoreLabel) scoreLabel.textContent = "Final Score · P1 vs P2";
+      const statsRow = $("results-stats");
+      if (statsRow) statsRow.hidden = true;
     } else if (pct === 100) msg = "FLAWLESS VICTORY!";
     else if (pct >= 80) msg = "OUTSTANDING!";
     else if (pct >= 60) msg = "SOLID WORK!";
@@ -433,7 +483,10 @@
       return;
     }
 
-    $("mode-title").textContent = formatTitle(mode, topic);
+    const title = formatTitle(mode, topic);
+    $("mode-title").textContent = title;
+    const tag = $("mode-tag");
+    if (tag) tag.textContent = (mode || "solo").toUpperCase();
     $("game-panel").hidden = false;
     $("results-panel").hidden = true;
 
